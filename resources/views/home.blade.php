@@ -8,13 +8,12 @@
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+                    @if ($user->roles_id == 1)
+                        Anda login sebagai Admin
+                    @else
+                        Anda login sebagai User
                     @endif
 
-                    {{ __('You are logged in!') }}
                 </div>
             </div>
         </div>
