@@ -8,11 +8,17 @@ use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $user = Auth::user();
-        return view('home');
+        return view('home', compact('user'));
     }
+    
     public function buku()
     {
         return view('buku');

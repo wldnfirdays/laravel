@@ -230,6 +230,12 @@ return [
             'topnav' => true,
         ],
         [
+            'text'        => 'Buku',
+            'url'         => 'admin/books',
+            'icon'        => 'fas fa-fw fa-book',
+            'can'           => 'isAdmin',
+        ],
+        [
             'text' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
