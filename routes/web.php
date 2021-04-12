@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,23 +25,38 @@ Route::get('/dashboard', function () {
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/book',
+Route::get(
+    '/book',
     [App\Http\Controllers\HomeController::class, 'buku']
-    )->name('buku')->middleware('auth');
+)->name('buku')->middleware('auth');
 
-Route::get('admin/home', [App\Http\Controllers\AdminController::class,
-'index'])
-        ->name('admin.home')
-        ->middleware('is_admin');
+Route::get('admin/home', [
+    App\Http\Controllers\AdminController::class,
+    'index'
+])
+    ->name('admin.home')
+    ->middleware('is_admin');
 
-Route::get('admin/books', [App\Http\Controllers\AdminController::class,
-'books'])
-        ->name('admin.books')
-        ->middleware('is_admin');
+Route::get('admin/books', [
+    App\Http\Controllers\AdminController::class,
+    'books'
+])
+    ->name('admin.books')
+    ->middleware('is_admin');
 
-//PENGELOLA BUKU
-// Route::get('admin/books', [App\Http\Controllers\AdminController::class,
-// 'submit_book'])
-//         ->name('admin.book.submit')
-//         ->middleware('is_admin');
+Route::patch('admin/books/update', [
+    App\Http\Controllers\AdminController::class,
+    'update_book'
+])
+    ->name('admin.book.update')
+    ->middleware('is_admin');
 
+Route::get('admin/ajaxadmin/dataBuku/{id}', [
+    App\Http\Controllers\AdminController::class,
+    'getDataBuku'
+]);
+
+
+Route::post('admin/books', [AdminController::class, 'submit_book'])
+    ->name('admin.book.submit')
+    ->middleware('is_admin');

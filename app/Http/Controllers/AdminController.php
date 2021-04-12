@@ -35,18 +35,19 @@ class AdminController extends Controller
         $book->judul = $req->get('judul');
         $book->penulis = $req->get('penulis');
         $book->tahun = $req->get('tahun');
-        $book->penerbit =$req->get('penerbit');
+        $book->penerbit = $req->get('penerbit');
 
         if ($req->hasFile('cover')) {
             $extension = $req->file('cover')->extension();
 
-            $filename = 'cover_buku'.time().'.'.$extension;
+            $filename = 'cover_buku' . time() . '.' . $extension;
 
             $req->file('cover')->storeAs(
-                'public/cover_buku', $filename
+                'public/cover_buku',
+                $filename
             );
 
-            $book->cover =$filename;
+            $book->cover = $filename;
         }
 
         $book->save();
@@ -55,6 +56,48 @@ class AdminController extends Controller
             'message' => 'Data buku berhasil ditambah',
             'alert-type' => 'success'
         );
-        Return redirect()->route('admin.books')->with($notification);
+        return redirect()->route('admin.books')->with($notification);
+    }
+    //AJAX PROCESS
+
+
+    public function update_book(Request $req)
+    {
+        $book = Book::find($req->get('id'));
+
+        $book->judul = $req->get('judul');
+        $book->penulis = $req->get('penulis');
+        $book->tahun = $req->get('tahun');
+        $book->penerbit = $req->get('penerbit');
+
+        if ($req->hasFile('cover')) {
+            $extension = $req->file('cover')->extension();
+
+            $filename = 'cover_buku_' . time() . '.' . $extension;
+
+            $req->file('cover')->storeAs(
+                'public/cover_buku',
+                $filename
+            );
+
+            Storage::delete('public/cover_buku/' . $req->get('old_cover'));
+
+            $book->cover = $filename;
+        }
+
+        $book->save();
+
+        $notification = array(
+            'message' => 'Data buku berhasil diubah',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin.books')->with($notification);
+    }
+    public function getDataBuku($id)
+    {
+        $buku = Book::find($id);
+
+        return response()->json($buku);
     }
 }
